@@ -1,6 +1,7 @@
 # CrimeFEM: A Finite Element and Agent-Based Modeling Framework for Urban Crime Dynamics
-![Demo](demo.gif)
-
+<div align="center">
+  <img src="demo.gif" alt="Demo" width="600">
+</div>
 
 This repository provides the code accompanying the paper:
 
