@@ -17,24 +17,23 @@ It contains:
 
 ---
 
-## Model Overview
+## 0. Model Overview
 We simulate the evolution of the *attractiveness field* and *criminal density* over realistic city geometries,
 derived as a mean-field limit from an underlying agent-based process.
 The PDE model resembles a nonlinear Keller–Segel system with Neumann-type boundary conditions.
 
 ---
 
-## Repository Structure
+## 1. Repository Structure
 - `src/pde_model/`: Python FEM implementation.
-- `matlab_abm/`: Agent-based MATLAB code.
-- `notebooks/`: Reproducibility and visualization notebooks.
+- `src/agent_based_model`: Agent-based MATLAB code.
+- `demo/`: Reproducibility and visualization notebooks.
 - `data/`: Input data (urban maps, parameters, etc.).
-- `results/`: Simulation outputs.
-- `docs/`: Documentation and model derivations.
 
 ---
 
-## Installation
+## 3. Installation
+
 
 ### Python (FEM)
 ```bash
