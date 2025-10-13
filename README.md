@@ -26,13 +26,33 @@ The PDE model resembles a nonlinear Keller–Segel system with Neumann-type boun
 
 ## 1. Repository Structure
 - `src/pde_model/`: Python FEM implementation.
-- `src/agent_based_model`: Agent-based MATLAB code.
+- `src/agent_based_model/`: Agent-based MATLAB code.
 - `demo/`: Reproducibility and visualization notebooks.
 - `data/`: Input data (urban maps, parameters, etc.).
 
 ---
 
-## 3. Installation
+## 3. Installation and Usage
+Before installing, ensure that you have the following dependencies available:
+**Core Requirements (Python side):**
+- Python ≥ 3.10  
+- [FEniCSx / dolfinx](https://fenicsproject.org) (latest stable)
+- `petsc4py`
+- `mpi4py`
+- `gmsh` (with Python API)
+- `pyvista`, `pyvistaqt` (optional, for visualization)
+- `numpy`
+
+**Optional (for MATLAB ABM):**
+- MATLAB R2023a or newer
+- Statistics and Parallel Computing Toolboxes (recommended)
+
+You can install most Python dependencies with:
+
+```bash
+pip install -r requirements.txt
+
+
 
 
 ### Python (FEM)
