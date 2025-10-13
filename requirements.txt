@@ -1,0 +1,33 @@
+# ==========================================================\
+# Requirements for the Burglary PDE\'96ABM Simulation Framework\
+# ==========================================================\
+# Python dependencies for running the finite element PDE model\
+# (dolfinx, FEniCSx) and associated visualization & utilities.\
+# ==========================================================\
+\
+# Core scientific stack\
+numpy>=1.24\
+scipy>=1.11\
+matplotlib>=3.8\
+pandas>=2.1\
+tqdm>=4.66\
+\
+# Finite element / PDE libraries\
+fenics-dolfinx>=0.8.0\
+petsc4py>=3.20\
+mpi4py>=3.1\
+\
+# Mesh generation and geometry handling\
+gmsh>=4.12\
+gmsh-sdk>=4.12\
+pygmsh>=7.1\
+\
+# Visualization and notebook utilities\
+pyvista>=0.44\
+pyvistaqt>=0.11\
+jupyter>=1.0\
+notebook>=7.0\
+\
+# Optional utilities\
+seaborn>=0.13\
+}
