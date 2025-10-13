@@ -3,7 +3,7 @@
   <img src="demo.gif" alt="Demo" width="600">
 </div>
 
-This repository provides the code accompanying the paper:
+This repository provides the code accompanying the paper as a base for multiscale, multi-physics extensions, integrating agent-based models and PDE solvers:
 
 **A finite element framework for simulating residential burglary in realistic urban geometries**  
 _Baoli Hao, Kamrun Mily, Annalisa Quaini, and Ming Zhong (2025)_  
@@ -33,6 +33,7 @@ The PDE model resembles a nonlinear Keller–Segel system with Neumann-type boun
 ---
 
 ## 3. Installation and Usage
+### 1️⃣ Requirements
 Before installing, ensure that you have the following dependencies available:
 **Core Requirements (Python side):**
 - Python ≥ 3.10  
@@ -50,12 +51,63 @@ Before installing, ensure that you have the following dependencies available:
 You can install most Python dependencies with:
 
 ```bash
+pip install --upgrade pip
 pip install -r requirements.txt
-
-
-
-
-### Python (FEM)
+```
+### 2️⃣ Environment Setup
+If you use *conda* (recommended):
 ```bash
-conda env create -f environment.yml
-conda activate crimefem
+conda create -n burglary python=3.10
+conda activate burglary
+```
+Then install FEniCSx and related libraries:
+```bash
+pip install fenics-dolfinx mpi4py petsc4py gmsh pyvista pyvistaqt numpy
+```
+Alternatively, you may use *Docker or micromamba* to install FEniCSx for better compatibility.
+
+### 3️⃣ Clone the Repository
+Choose a folder where you want to install the package and clone the repository:
+```bash
+cd ~
+git clone https://github.com/baolihao/UrbanCrime-Sim.git
+cd UrbanCrime-Sim
+```
+
+### 4️⃣ Run the PDE Simulation (IPython / Jupyter)
+All main Python code for the PDE solver is located under:
+```bash
+src/pde_model/
+```
+You can run the PDE solver interactively using Jupyter Notebook:
+```bash
+jupyter notebook
+```
+Then open:
+```bash
+demo/pde/PDE_SM_Demo.ipynb
+```
+and execute the notebook cells step by step.
+
+### 5️⃣ Run the Agent-Based Model (MATLAB)
+The agent-based model scripts are located in:
+```bash
+src/agent_based_model/
+```
+To run them in MATLAB:
+```bash
+cd src/demo/ode
+run test_system.m
+```
+
+## 4. Citation
+
+If you use this code, please cite:
+```
+@article{hao2025finite,
+  title={A finite element framework for simulating residential burglary in realistic urban geometries},
+  author={Hao, Baoli and Mily, Kamrun and Quaini, Annalisa and Zhong, Ming},
+  journal={arXiv preprint arXiv:2508.11055},
+  year={2025}
+}
+```
