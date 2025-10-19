@@ -33,7 +33,7 @@ The PDE model resembles a nonlinear Keller–Segel system with Neumann-type boun
 ---
 
 ## 3. Installation and Usage
-### 1️⃣ Requirements
+### (1). Requirements
 Before installing, ensure that you have the following dependencies available:
 **Core Requirements (Python side):**
 - Python ≥ 3.10  
@@ -54,7 +54,7 @@ You can install most Python dependencies with:
 pip install --upgrade pip
 pip install -r requirements.txt
 ```
-### 2️⃣ Environment Setup
+### (2). Environment Setup
 If you use *conda* (recommended):
 ```bash
 conda create -n burglary python=3.10
@@ -66,7 +66,7 @@ pip install fenics-dolfinx mpi4py petsc4py gmsh pyvista pyvistaqt numpy
 ```
 Alternatively, you may use *Docker or micromamba* to install FEniCSx for better compatibility.
 
-### 3️⃣ Clone the Repository
+### (3). Clone the Repository
 Choose a folder where you want to install the package and clone the repository:
 ```bash
 cd ~
@@ -74,7 +74,7 @@ git clone https://github.com/baolihao/UrbanCrime-Sim.git
 cd UrbanCrime-Sim
 ```
 
-### 4️⃣ Run the PDE Simulation (IPython / Jupyter)
+### (4). Run the PDE Simulation (IPython / Jupyter)
 All main Python code for the PDE solver is located under:
 ```bash
 src/pde_model/
@@ -89,7 +89,7 @@ demo/pde/PDE_SM_Demo.ipynb
 ```
 and execute the notebook cells step by step.
 
-### 5️⃣ Run the Agent-Based Model (MATLAB)
+### (5). Run the Agent-Based Model (MATLAB)
 The agent-based model scripts are located in:
 ```bash
 src/agent_based_model/
