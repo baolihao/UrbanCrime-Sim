@@ -5,10 +5,9 @@
 
 This repository provides the code accompanying our paper:
 
-**A finite element framework for simulating residential burglary in realistic urban geometries**  
+**[A finite element framework for simulating residential burglary in realistic urban geometries](https://www.worldscientific.com/doi/abs/10.1142/S0218202526500193)**  
 _Baoli Hao, Kamrun Mily, Annalisa Quaini, and Ming Zhong_  
 *Math. Models Methods Appl. Sci.*, 36(5):1019–1050, 2026.
-
 
 It contains:
 - Two **finite element solvers (Python)** for the PDE mean-field model.
