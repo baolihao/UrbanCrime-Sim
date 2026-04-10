@@ -3,11 +3,11 @@
   <img src="demo.gif" alt="Demo" width="600">
 </div>
 
-This repository provides the code accompanying the paper as a base for multiscale, multi-physics extensions, integrating agent-based models and PDE solvers:
+This repository provides the code accompanying our paper:
 
 **A finite element framework for simulating residential burglary in realistic urban geometries**  
-_Baoli Hao, Kamrun Mily, Annalisa Quaini, and Ming Zhong (2025)_  
-arXiv: [2508.11055](https://arxiv.org/abs/2508.11055)
+_Baoli Hao, Kamrun Mily, Annalisa Quaini, and Ming Zhong_  
+*Math. Models Methods Appl. Sci.*, 36(5):1019–1050, 2026.
 
 
 It contains:
@@ -104,10 +104,14 @@ run test_system.m
 
 If you use this code, please cite:
 ```
-@article{hao2025finite,
+@article{hao2026finite,
   title={A finite element framework for simulating residential burglary in realistic urban geometries},
   author={Hao, Baoli and Mily, Kamrun and Quaini, Annalisa and Zhong, Ming},
-  journal={arXiv preprint arXiv:2508.11055},
-  year={2025}
+  journal={Mathematical Models and Methods in Applied Sciences},
+  volume={36},
+  number={05},
+  pages={1019--1050},
+  year={2026},
+  publisher={World Scientific}
 }
 ```
