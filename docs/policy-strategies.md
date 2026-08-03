@@ -13,9 +13,9 @@ recover the no-police model used by the finite-element paper.
 
 Supplies `pi(x,t)` externally.  The snapshot profile currently implemented is
 
-\[
+$$
 \pi_{raw}=-\log\left[\tfrac12(1-\tanh(\kappa(A(t_s)-A_c)))\right].
-\]
+$$
 
 The profile may be scaled to a requested total budget.  Because this scaling
 changes the original formula, outputs identify it as `budget_normalized_snapshot`.
@@ -24,10 +24,10 @@ changes the original formula, outputs identify it as `budget_normalized_snapshot
 
 For crime intensity `f = rho*A`, the nodal mass-lumped solution is
 
-\[
+$$
 \pi_i=\max(\log(f_i/\lambda),0),
 \qquad \sum_i w_i\pi_i=M.
-\]
+$$
 
 The weights `w_i = integral(phi_i)` are assembled from the actual mesh.  This
 replaces the uniform-node-area approximation in the research notebook and works

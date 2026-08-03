@@ -8,36 +8,36 @@ Let `A` denote attractiveness, `rho` criminal density, `pi` police density, `H`
 delayed crime information, `ast` static attractiveness, and `q` the effective
 criminal source.  The model is
 
-\[
+$$
 \partial_t A
-= \nabla\!\cdot\!\left(\eta(x)\nabla(A-A^{st}(x))\right)
+= \nabla\cdot\left(\eta(x)\nabla(A-A^{st}(x))\right)
 -A+\rho A e^{-\pi}+A^{st}(x),
-\]
+$$
 
-\[
+$$
 \partial_t\rho
-=\nabla\!\cdot\!\left(\nabla\rho-\frac{2\rho}{A}\nabla A\right)
+=\nabla\cdot\left(\nabla\rho-\frac{2\rho}{A}\nabla A\right)
 -(\rho A-q(x))e^{-\pi}.
-\]
+$$
 
 Delayed policing adds
 
-\[
+$$
 \partial_t\pi
-=\nabla\!\cdot\!\left(\nabla\pi-\frac{2\pi}{H}\nabla H\right),
+=\nabla\cdot\left(\nabla\pi-\frac{2\pi}{H}\nabla H\right),
 \qquad
 \partial_tH=\frac{\rho A e^{-\pi}-H}{\tau(x)}.
-\]
+$$
 
 The associated natural flux conditions are
 
-\[
+$$
 \eta\nabla(A-A^{st})\cdot n=0,
 \quad
 \left(\nabla\rho-2\rho\nabla A/A\right)\cdot n=0,
 \quad
 \left(\nabla\pi-2\pi\nabla H/H\right)\cdot n=0.
-\]
+$$
 
 ### Relation to the published boundary condition
 
@@ -57,15 +57,15 @@ condition, not an algebraic restatement of it.
 
 For test functions `a`, `r`, `p`, and `h`, the implementation assembles
 
-\[
+$$
 (A-A^-,a)+\Delta t\,(\eta\nabla(A-A^{st}),\nabla a)
 +\Delta t\,(A-\rho A e^{-\pi}-A^{st},a)=0,
-\]
+$$
 
-\[
+$$
 (\rho-\rho^-,r)+\Delta t\,(\nabla\rho-2\rho\nabla A/A,\nabla r)
 +\Delta t\,((\rho A-q)e^{-\pi},r)=0.
-\]
+$$
 
 The delayed fields use the analogous consistent weak form.  A partitioned solve
 may update `H` with a documented mass-lumped pointwise backward-Euler step.
