@@ -60,7 +60,7 @@ Run the homogeneous stability study with:
 python scripts/run_stability.py configs/studies/stability_figure3.yaml
 ```
 
-Run the continuum model, Python ABM, and policy comparison with:
+Run the continuum model, agent-based model, and policy comparison with:
 
 ```bash
 python scripts/run_pde.py configs/simulations/no_police_square.yaml
