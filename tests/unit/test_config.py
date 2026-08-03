@@ -1,5 +1,6 @@
 from pathlib import Path
 
+from urbancrime.abm import load_abm_config
 from urbancrime.config import NoPoliceConfig, load_run_config
 
 
@@ -32,3 +33,33 @@ def test_all_continuum_configs_expose_state_tolerance_and_no_historical_q_names(
         text = str(resolved)
         assert "Bbar" not in text
         assert "GTfactor" not in text
+
+
+def test_all_abm_configs_are_typed_and_have_no_hidden_legacy_names() -> None:
+    for path in sorted((ROOT / "configs/abm").glob("*.yaml")):
+        config = load_abm_config(path)
+        assert config.schema_version == 2
+        assert config.time.steps > 0
+        text = path.read_text(encoding="utf-8")
+        assert "Bbar" not in text
+        assert "n_total" not in text
+
+
+def test_m3as_no_noise_figure_configs_have_no_stochastic_initial_data() -> None:
+    for case in (2, 3):
+        config = load_run_config(
+            ROOT / f"configs/simulations/no_police_case{case}_no_noise_square.yaml"
+        )
+        assert config.initial_conditions.noise is None
+        assert config.initial_conditions.A["kind"] == "constant"
+        assert config.initial_conditions.rho["kind"] == "constant"
+
+
+def test_extension_abm_configs_save_the_published_field_panel_times() -> None:
+    expected = {
+        8: (765.0, 768.0, 771.0, 774.0, 777.0, 780.0),
+        9: (744.0, 747.0, 750.0, 753.0, 756.0, 759.0),
+    }
+    for case, times in expected.items():
+        config = load_abm_config(ROOT / f"configs/abm/delayed_case{case}.yaml")
+        assert config.output.snapshot_times == times

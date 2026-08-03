@@ -1,0 +1,18 @@
+schema_version: 2
+name: no-police-abm-case-1
+grid: {nx: 200, ny: 200, spacing: 0.08, boundary: no_flow}
+time: {start: 0.0, final: 300.0, step: 0.02, save_every: 50}
+scaling: {diffusivity: 0.5, omega: 0.06666666666666667, theta: 0.58, beta: 0.25}
+model:
+  eta: 0.9
+  ast: {kind: constant, value: 0.03333333333333333}
+  generation_ratio: {kind: constant, value: 1.00485}
+  arrest_probability: 0.0
+  generation_distribution: bernoulli
+initial:
+  dynamic_attractiveness: {kind: constant, value: 1.0}
+  criminal_density: {kind: constant, value: 0.8}
+  police_density: {kind: constant, value: 0.0}
+  seed: 1001
+policing: {strategy: none, tau: null}
+output: {root: runs, snapshot_times: [0, 3.6, 10, 15, 200, 225, 250, 275, 300]}

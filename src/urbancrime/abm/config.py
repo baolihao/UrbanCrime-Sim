@@ -1,4 +1,9 @@
-"""Typed configuration for the Python agent-based model."""
+"""Typed configuration for the discrete burglary-and-police ABM.
+
+Configuration values use the nondimensional variables printed in the papers.
+The dimensional constants in :class:`ABMScalingConfig` are only used to map
+integer agents to the continuum fields ``rho`` and ``pi``.
+"""
 
 from __future__ import annotations
 
@@ -36,19 +41,30 @@ class ABMTimeConfig:
 
 
 @dataclass(frozen=True)
-class ABMModelConfig:
-    eta: float
+class ABMScalingConfig:
+    """Dimensional constants used in the paper's nondimensionalization."""
+
+    diffusivity: float
     omega: float
     theta: float
+    beta: float
+
+
+@dataclass(frozen=True)
+class ABMModelConfig:
+    eta: float
     ast: CoefficientSpec
-    gamma: CoefficientSpec
+    generation_ratio: CoefficientSpec
+    arrest_probability: float
     generation_distribution: Literal["bernoulli", "poisson"]
 
 
 @dataclass(frozen=True)
 class ABMInitialConfig:
-    dynamic_attractiveness: float
-    mean_criminals_per_site: float
+    dynamic_attractiveness: CoefficientSpec
+    criminal_density: CoefficientSpec
+    police_density: CoefficientSpec
+    information: CoefficientSpec | None
     seed: int
 
 
@@ -56,15 +72,12 @@ class ABMInitialConfig:
 class ABMPoliceConfig:
     strategy: Literal["none", "delayed"]
     tau: float | None
-    initial_mean_density: float
-    diffusivity: float
-    diffusion_substeps: int
-    information_floor: float
 
 
 @dataclass(frozen=True)
 class ABMOutputConfig:
     root: Path
+    snapshot_times: tuple[float, ...]
 
 
 @dataclass(frozen=True)
@@ -73,6 +86,7 @@ class ABMConfig:
     name: str
     grid: ABMGridConfig
     time: ABMTimeConfig
+    scaling: ABMScalingConfig
     model: ABMModelConfig
     initial: ABMInitialConfig
     policing: ABMPoliceConfig
@@ -85,15 +99,32 @@ def _map(value: Any, name: str) -> Mapping[str, Any]:
     return value
 
 
+def _coefficient(raw: Any, name: str, base: Path) -> CoefficientSpec:
+    spec = CoefficientSpec.from_mapping(_map(raw, name))
+    if spec.path is not None and not spec.path.is_absolute():
+        spec = CoefficientSpec(
+            kind=spec.kind,
+            value=spec.value,
+            profile=spec.profile,
+            parameters=spec.parameters,
+            path=(base / spec.path).resolve(),
+            field_name=spec.field_name,
+        )
+    return spec
+
+
 def load_abm_config(path: str | Path) -> ABMConfig:
-    with Path(path).open(encoding="utf-8") as stream:
+    config_path = Path(path)
+    with config_path.open(encoding="utf-8") as stream:
         raw = _map(yaml.safe_load(stream), str(path))
     grid_raw = _map(raw["grid"], "grid")
     time_raw = _map(raw["time"], "time")
+    scaling_raw = _map(raw["scaling"], "scaling")
     model_raw = _map(raw["model"], "model")
     initial_raw = _map(raw["initial"], "initial")
     police_raw = _map(raw["policing"], "policing")
     output_raw = _map(raw["output"], "output")
+    information_raw = initial_raw.get("information")
     config = ABMConfig(
         schema_version=int(raw["schema_version"]),
         name=str(raw["name"]),
@@ -109,55 +140,94 @@ def load_abm_config(path: str | Path) -> ABMConfig:
             step=float(time_raw["step"]),
             save_every=int(time_raw["save_every"]),
         ),
+        scaling=ABMScalingConfig(
+            diffusivity=float(scaling_raw["diffusivity"]),
+            omega=float(scaling_raw["omega"]),
+            theta=float(scaling_raw["theta"]),
+            beta=float(scaling_raw["beta"]),
+        ),
         model=ABMModelConfig(
             eta=float(model_raw["eta"]),
-            omega=float(model_raw["omega"]),
-            theta=float(model_raw["theta"]),
-            ast=CoefficientSpec.from_mapping(_map(model_raw["ast"], "model.ast")),
-            gamma=CoefficientSpec.from_mapping(_map(model_raw["gamma"], "model.gamma")),
-            generation_distribution=str(model_raw["generation_distribution"]),  # type: ignore[arg-type]
+            ast=_coefficient(model_raw["ast"], "model.ast", config_path.parent),
+            generation_ratio=_coefficient(
+                model_raw["generation_ratio"], "model.generation_ratio", config_path.parent
+            ),
+            arrest_probability=float(model_raw["arrest_probability"]),
+            generation_distribution=str(  # type: ignore[arg-type]
+                model_raw["generation_distribution"]
+            ),
         ),
         initial=ABMInitialConfig(
-            dynamic_attractiveness=float(initial_raw["dynamic_attractiveness"]),
-            mean_criminals_per_site=float(initial_raw["mean_criminals_per_site"]),
+            dynamic_attractiveness=_coefficient(
+                initial_raw["dynamic_attractiveness"],
+                "initial.dynamic_attractiveness",
+                config_path.parent,
+            ),
+            criminal_density=_coefficient(
+                initial_raw["criminal_density"], "initial.criminal_density", config_path.parent
+            ),
+            police_density=_coefficient(
+                initial_raw["police_density"], "initial.police_density", config_path.parent
+            ),
+            information=(
+                _coefficient(information_raw, "initial.information", config_path.parent)
+                if information_raw is not None
+                else None
+            ),
             seed=int(initial_raw["seed"]),
         ),
         policing=ABMPoliceConfig(
             strategy=str(police_raw["strategy"]),  # type: ignore[arg-type]
             tau=float(police_raw["tau"]) if police_raw.get("tau") is not None else None,
-            initial_mean_density=float(police_raw["initial_mean_density"]),
-            diffusivity=float(police_raw["diffusivity"]),
-            diffusion_substeps=int(police_raw["diffusion_substeps"]),
-            information_floor=float(police_raw["information_floor"]),
         ),
-        output=ABMOutputConfig(root=Path(output_raw["root"])),
+        output=ABMOutputConfig(
+            root=Path(output_raw["root"]),
+            snapshot_times=tuple(float(value) for value in output_raw.get("snapshot_times", ())),
+        ),
     )
     _validate(config)
     return config
 
 
 def _validate(config: ABMConfig) -> None:
+    if config.schema_version != 2:
+        raise ValueError("Python ABM configurations require schema_version: 2")
     if config.grid.nx < 2 or config.grid.ny < 2 or config.grid.spacing <= 0:
         raise ValueError("ABM grid requires nx, ny >= 2 and positive spacing")
     if config.grid.boundary not in {"no_flow", "periodic"}:
         raise ValueError("ABM boundary must be no_flow or periodic")
-    if config.time.step <= 0 or config.time.final <= config.time.start or config.time.save_every < 1:
+    if (
+        config.time.step <= 0
+        or config.time.final <= config.time.start
+        or config.time.save_every < 1
+    ):
         raise ValueError("invalid ABM time controls")
     _ = config.time.steps
-    if not 0 <= config.model.eta <= 1 or config.model.omega <= 0 or config.model.theta < 0:
-        raise ValueError("invalid ABM eta, omega, or theta")
+    if config.time.step > 1:
+        raise ValueError("the attractiveness decay update requires nondimensional time.step <= 1")
+    scaling = config.scaling
+    if min(scaling.diffusivity, scaling.omega, scaling.theta, scaling.beta) <= 0:
+        raise ValueError("ABM scaling constants must be positive")
+    if not 0 <= config.model.eta <= 1:
+        raise ValueError("model.eta must lie in [0, 1]")
+    if not 0 <= config.model.arrest_probability <= 1:
+        raise ValueError("model.arrest_probability must lie in [0, 1]")
     if config.model.generation_distribution not in {"bernoulli", "poisson"}:
         raise ValueError("invalid criminal generation distribution")
-    if config.initial.dynamic_attractiveness < 0 or config.initial.mean_criminals_per_site < 0:
-        raise ValueError("ABM initial means must be nonnegative")
     if config.policing.strategy not in {"none", "delayed"}:
         raise ValueError("Python ABM supports none and delayed policing")
-    if config.policing.strategy == "delayed" and (config.policing.tau is None or config.policing.tau <= 0):
-        raise ValueError("delayed ABM requires positive tau")
-    if (
-        config.policing.initial_mean_density < 0
-        or config.policing.diffusivity < 0
-        or config.policing.diffusion_substeps < 1
-        or config.policing.information_floor <= 0
-    ):
-        raise ValueError("invalid ABM police controls")
+    if config.policing.strategy == "none" and config.model.arrest_probability != 0:
+        raise ValueError("arrest_probability must be zero without police")
+    if config.policing.strategy == "delayed":
+        if config.policing.tau is None or config.policing.tau <= 0:
+            raise ValueError("delayed ABM requires positive tau")
+        if config.time.step > config.policing.tau:
+            raise ValueError("explicit information update requires time.step <= policing.tau")
+    for value in config.output.snapshot_times:
+        raw_step = (value - config.time.start) / config.time.step
+        if (
+            value < config.time.start
+            or value > config.time.final
+            or abs(raw_step - round(raw_step)) > 1e-8
+        ):
+            raise ValueError("snapshot times must lie on ABM time steps inside the run interval")

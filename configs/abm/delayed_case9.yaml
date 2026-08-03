@@ -1,0 +1,19 @@
+schema_version: 2
+name: delayed-abm-case-9
+grid: {nx: 100, ny: 100, spacing: 0.1, boundary: no_flow}
+time: {start: 0.0, final: 759.0, step: 0.02, save_every: 50}
+scaling: {diffusivity: 4.0, omega: 0.06666666666666667, theta: 0.2339, beta: 0.25}
+model:
+  eta: 0.15
+  ast: {kind: constant, value: 0.02}
+  generation_ratio: {kind: constant, value: 1.5}
+  arrest_probability: 0.0
+  generation_distribution: bernoulli
+initial:
+  dynamic_attractiveness: {kind: constant, value: 1.5}
+  criminal_density: {kind: constant, value: 0.6}
+  police_density: {kind: constant, value: 0.1}
+  information: {kind: constant, value: 0.825211725248795}
+  seed: 2009
+policing: {strategy: delayed, tau: 5.0}
+output: {root: runs, snapshot_times: [744, 747, 750, 753, 756, 759]}

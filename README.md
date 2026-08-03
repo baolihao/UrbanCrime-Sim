@@ -21,6 +21,8 @@ policing strategy supplies police density `pi`:
 See [docs/model.md](docs/model.md) and
 [docs/policy-strategies.md](docs/policy-strategies.md) for equations and numerical
 conventions.
+The discrete stochastic implementation is documented separately in
+[docs/agent-based-model.md](docs/agent-based-model.md).
 The no-hidden-parameter rules are documented in
 [docs/configuration.md](docs/configuration.md).
 
@@ -69,9 +71,9 @@ python scripts/compare_policies.py configs/studies/policy_comparison.yaml
 ```
 
 The equivalent installed commands are `urbancrime-pde`, `urbancrime-abm`, and
-`urbancrime-compare-policies`.  Each PDE run writes the resolved configuration,
-Git revision, mesh metadata, XDMF/HDF5 fields, compact time series, final state,
-and SHA-256 checksums beneath `runs/`.
+`urbancrime-compare-policies`. Each run writes its resolved configuration, Git
+revision, environment metadata, numerical output, and SHA-256 checksums beneath
+`runs/`.
 
 ## Verification
 
