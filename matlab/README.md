@@ -5,11 +5,10 @@ nondimensional configuration vocabulary and discrete update semantics as the
 Python ABM. Original pre-refactor `.m` files are retained separately under
 `legacy/matlab_abm/` and are not used by these paper entry points.
 
-The experimental `Code_updated_May1226` files were audited rather than copied.
-The maintained implementation fixes the undefined `n_total` in
-`set_population.m`, inconsistent function/file names, the zero-neighbor `H`
-division, output-frequency-dependent event accounting, and the inconsistent
-dimensional conversion of `delta_t`.
+The implementation is self-contained: paper parameters are resolved through
+`matlab_abm_config.m`, update rules live in `matlab_abm_simulate.m`, and the
+numerical conventions shared with the Python ABM are documented in
+`docs/agent-based-model.md`.
 
 ## Requirements
 

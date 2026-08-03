@@ -33,8 +33,8 @@ Each police agent remains at its site with probability
 $1-\exp(-\Sigma n_s p_s)$; every remaining agent moves to a neighbor with
 probability proportional to the neighbor's old $H$. If all four neighboring
 values are zero, the implementation uses a uniform move. This avoids the
-division by zero in the experimental MATLAB code while preserving the integer
-police budget exactly.
+undefined $0/0$ normalization while preserving the integer police budget
+exactly.
 
 ## Discrete-to-continuum scaling
 
@@ -49,8 +49,8 @@ $$
 
 The initial continuous densities are converted into nonnegative integer arrays
 with a fixed total equal to the ceiling of the requested population. The
-fractional remainder is placed randomly without replacement, matching the
-intent of the historical `set_population.m` routine.
+fractional remainder is placed randomly without replacement; a fixed seed makes
+this initialization reproducible.
 
 `trajectory.npz` stores selected field snapshots, raw counts, the expected
 continuum rate `expected_S = rho*A*exp(-pi)`, and the event-based
@@ -58,18 +58,16 @@ continuum rate `expected_S = rho*A*exp(-pi)`, and the event-based
 `time.save_every`; `summary.json` records cumulative events independently of
 the output frequency.
 
-## Audited choices from `Code_updated_May1226`
+## Implementation conventions
 
-The experimental MATLAB files were treated as algorithm notes, not copied
-verbatim. The Python implementation makes the following corrections:
+The maintained Python and MATLAB implementations use the following explicit
+conventions:
 
-- dimensional time is $t=\widetilde t/\omega$ (the reference divided final time
-  and $\tau$ by $\omega$ but accidentally omitted it for `delta_t`);
-- population initialization uses its actual argument instead of the undefined
-  variable `n_total`;
+- dimensional and nondimensional time are related by
+  $t=\widetilde t/\omega$, including the conversion of `delta_t`, final time,
+  and $\tau$;
 - zero neighboring information produces a uniform police move instead of NaNs;
-- the busy-police probability uses $n_sp_s$ as in equation (2.12), rather than
-  switching between expected and sampled crimes in different MATLAB files;
+- the busy-police probability uses $n_sp_s$ as in equation (2.12);
 - event totals are accumulated every step and therefore do not change with the
   snapshot frequency;
 - `generation_ratio`, $\theta$, $\beta$, $D$, $\omega$, $\Sigma$, all initial
@@ -79,6 +77,4 @@ The full paper configurations are under `configs/abm/`. The shorter
 `delayed_square.yaml` is an inexpensive end-to-end example.
 
 The Case 8 and Case 9 configurations use the extension paper's dimensional
-value `theta: 0.2339`. The experimental `TEST_ON.m` driver instead assigned
-`theta = 0.58` globally; because that changes the number of discrete criminals
-per prescribed continuum density, it is not treated as an equivalent setting.
+value `theta: 0.2339`.
