@@ -1,0 +1,62 @@
+schema_version: 1
+name: no-police-chicago-i90
+
+model:
+  eta: {kind: constant, value: 0.06}
+  ast:
+    kind: analytic
+    profile: piecewise_linear_ridge
+    parameters:
+      background: 0.03333333333333333
+      amplitude: 0.03333333333333333
+      sharpness: 20.0
+      switch_x: 9.5
+      left_line: [0.0, -1.0, 20.8]
+      right_line: [-1.2307692307692308, -1.0, 32.4923]
+  q:
+    kind: analytic
+    profile: piecewise_linear_ridge
+    parameters:
+      background: 1.0
+      amplitude: 1.0
+      sharpness: 20.0
+      switch_x: 9.5
+      left_line: [0.0, -1.0, 20.8]
+      right_line: [-1.2307692307692308, -1.0, 32.4923]
+
+policing: {strategy: none}
+
+domain:
+  kind: polygon
+  boundary_file: data/boundaries/processed/chicago.npy
+  scale_factor: 4.8
+
+mesh:
+  cell_type: triangle
+  polynomial_degree: 1
+  characteristic_length: 0.17
+
+time: {start: 0.0, final: 200.0, step: 0.02, save_every: 50}
+
+initial_conditions:
+  A: {kind: ast_plus_q_plus_noise}
+  rho: {kind: constant_plus_noise, value: 0.8}
+  noise:
+    distribution: normal
+    seed: 42
+    A_standard_deviation: 0.05
+    rho_standard_deviation: 0.01
+    A_sparsity: 0.1
+    rho_sparsity: 1.0
+
+solver:
+  method: partitioned
+  relative_tolerance: 1.0e-9
+  absolute_tolerance: 1.0e-12
+  max_iterations: 500
+  state_tolerance: 1.0e-12
+  convergence_criterion: incremental
+  block_order: [A, rho]
+  petsc_options: {ksp_type: preonly, pc_type: lu}
+
+output: {root: runs, fields: [A, rho], format: xdmf}
