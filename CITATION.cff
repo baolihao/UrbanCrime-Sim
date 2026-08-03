@@ -3,6 +3,7 @@ message: "Please cite the software and the paper corresponding to the model conf
 title: "UrbanCrime-Sim"
 type: software
 version: 0.1.0
+license: BSD-3-Clause
 authors:
   - family-names: Hao
     given-names: Baoli

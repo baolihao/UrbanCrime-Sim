@@ -7,25 +7,9 @@
   "terms_url": "https://www.chicago.gov/city/en/narr/foia/data_disclaimer.html",
   "acquired_at": null,
   "acquisition_note": "Historical download; acquisition date is unknown.",
-  "source": "data/boundaries/raw/chicago/chicago_simplified.shp",
-  "source_files_sha256": {
-    "chicago_simplified.cpg": "3ad3031f5503a4404af825262ee8232cc04d4ea6683d42c5dd0a2f2a27ac9824",
-    "chicago_simplified.dbf": "24717c94e9f90ad7912c02290b9b4b6e82f77c8cf7b9d607de412e98ca3b8c49",
-    "chicago_simplified.provenance.json": "cc19fbc22ead59be15dc9e6b027c05c49f904055bf8581e64cde4d7d1e077da5",
-    "chicago_simplified.shp": "042da4646989af333b2024c227d42274c6a6d5236bba0fdd8bf4b5bcd786c4d3",
-    "chicago_simplified.shx": "66e48fb771581e77758b2e9a2df893ba05fea01aa684404817c18fb16384cc0c"
-  },
-  "source_crs": "EPSG:3435",
-  "source_crs_embedded": false,
   "source_crs_evidence": "Coordinate range matches the official City GIS boundary layer identified as spatial reference 3435 (NAD83 / Illinois East, US survey feet).",
   "source_crs_evidence_url": "https://gisapps.cityofchicago.org/arcgis/rest/services/CachedMaps/CartoCache/MapServer",
   "preprocessing_note": "The local shapefile was already simplified and its .prj file was absent when archived; the earlier simplification method is unknown.",
-  "source_feature_count": 1,
-  "selected_geometry": "largest polygon exterior",
   "processed_coordinate_system": "dimensionless model coordinates",
-  "translation": "subtract coordinate-wise minima",
-  "hole_count": 0,
-  "original_long_side": 137769.04520000517,
-  "target_long_side": 5.0,
-  "scale": 3.629262286561751e-05
+  "translation": "subtract coordinate-wise minima"
 }

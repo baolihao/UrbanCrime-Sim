@@ -105,6 +105,11 @@ The model family builds on:
 
 Figure-to-command mappings are maintained in [docs/reproduce.md](docs/reproduce.md).
 
-The software license is a release blocker pending copyright-owner and
-institutional confirmation.  See [docs/licensing.md](docs/licensing.md).  No
-reuse license is granted until a `LICENSE` file is added.
+## License and data terms
+
+The UrbanCrime-Sim software is released under the
+[BSD 3-Clause License](LICENSE).  This license covers the software, not bundled
+third-party geographic data.  The derived Chicago boundary remains subject to
+the City of Chicago source terms and attribution requirements; see
+[data/boundaries/NOTICE.md](data/boundaries/NOTICE.md) and
+[docs/licensing.md](docs/licensing.md).
