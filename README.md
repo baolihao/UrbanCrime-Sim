@@ -38,7 +38,6 @@ does not attempt to install the native FEniCSx stack through pip.
 
 ## Configuration
 
-Configurations are named by what they run, not by paper or journal:
 
 ```text
 configs/
