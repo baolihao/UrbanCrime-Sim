@@ -1,115 +1,110 @@
-# CrimeFEM: A Finite Element and Agent-Based Modeling Framework for Urban Crime Dynamics
-<div align="center">
-  <img src="demo.gif" alt="Demo" width="600">
-</div>
+# UrbanCrime-Sim
 
-This repository provides the code accompanying our paper:
+UrbanCrime-Sim is a configuration-driven research codebase for continuum and
+agent-based models of residential burglary and police response.
 
-**[A finite element framework for simulating residential burglary in realistic urban geometries](https://www.worldscientific.com/doi/abs/10.1142/S0218202526500193)**  
-Baoli Hao, Kamrun Mily, Annalisa Quaini, and Ming Zhong, *Math. Models Methods Appl. Sci.*, 36(5):1019–1050, 2026.
+The canonical continuum formulation is the heterogeneous conservative-flux
+model.  Scalar parameters are represented as constant coefficients, so the same
+weak form also supports spatially varying `eta`, `ast`, `q`, and (for delayed
+policing) `tau` without special scalar branches.
 
-It contains:
-- Two **finite element solvers (Python)** for the PDE mean-field model.
-- An **agent-based model (MATLAB)** representing individual criminal motion.
-- Tools for data analysis, and visualization.
+## Model family
 
----
+The persistent fields are attractiveness `A` and criminal density `rho`.  A
+policing strategy supplies police density `pi`:
 
-## 0. Model Overview
-We simulate the evolution of the *attractiveness field* and *criminal density* over realistic city geometries,
-derived as a mean-field limit from an underlying agent-based process.
-The PDE model resembles a nonlinear Keller–Segel system with Neumann-type boundary conditions.
+- `none`: no police, `pi = 0`;
+- `prescribed`: a fixed or externally supplied police field;
+- `optimal`: a mass-constrained instantaneous allocation;
+- `delayed`: dynamic police density `pi` coupled to delayed crime information `H`.
 
----
+See [docs/model.md](docs/model.md) and
+[docs/policy-strategies.md](docs/policy-strategies.md) for equations and numerical
+conventions.
+The no-hidden-parameter rules are documented in
+[docs/configuration.md](docs/configuration.md).
 
-## 1. Repository Structure
-- `src/pde_model/`: Python FEM implementation.
-- `src/agent_based_model/`: Agent-based MATLAB code.
-- `demo/`: Reproducibility and visualization notebooks.
-- `data/`: Input data (urban maps, parameters, etc.).
+## Environment
 
----
-
-## 3. Installation and Usage
-### (1). Requirements
-Before installing, ensure that you have the following dependencies available:
-**Core Requirements (Python side):**
-- Python ≥ 3.10  
-- [FEniCSx / dolfinx](https://fenicsproject.org) (latest stable)
-- `petsc4py`
-- `mpi4py`
-- `gmsh` (with Python API)
-- `pyvista`, `pyvistaqt` (optional, for visualization)
-- `numpy`
-
-**Optional (for MATLAB ABM):**
-- MATLAB R2023a or newer
-- Statistics and Parallel Computing Toolboxes (recommended)
-
-You can install most Python dependencies with:
+FEniCSx and its MPI/PETSc dependencies are provided through conda-forge:
 
 ```bash
-pip install --upgrade pip
-pip install -r requirements.txt
-```
-### (2). Environment Setup
-If you use *conda* (recommended):
-```bash
-conda create -n burglary python=3.10
-conda activate burglary
-```
-Then install FEniCSx and related libraries:
-```bash
-pip install fenics-dolfinx mpi4py petsc4py gmsh pyvista pyvistaqt numpy
-```
-Alternatively, you may use *Docker or micromamba* to install FEniCSx for better compatibility.
-
-### (3). Clone the Repository
-Choose a folder where you want to install the package and clone the repository:
-```bash
-cd ~
-git clone https://github.com/baolihao/UrbanCrime-Sim.git
-cd UrbanCrime-Sim
+conda env create -f environment.yml
+conda activate urbancrime
 ```
 
-### (4). Run the PDE Simulation (IPython / Jupyter)
-All main Python code for the PDE solver is located under:
-```bash
-src/pde_model/
-```
-You can run the PDE solver interactively using Jupyter Notebook:
-```bash
-jupyter notebook
-```
-Then open:
-```bash
-demo/pde/PDE_SM_Demo.ipynb
-```
-and execute the notebook cells step by step.
+`pyproject.toml` contains package metadata and the pure-Python dependencies.  It
+does not attempt to install the native FEniCSx stack through pip.
 
-### (5). Run the Agent-Based Model (MATLAB)
-The agent-based model scripts are located in:
-```bash
-src/agent_based_model/
-```
-To run them in MATLAB:
-```bash
-cd src/demo/ode
-run test_system.m
+## Configuration
+
+Configurations are named by what they run, not by paper or journal:
+
+```text
+configs/
+├── simulations/   # one continuum PDE run
+├── abm/           # one Python agent-based run
+├── studies/       # sweeps and multi-strategy comparisons
+├── regression/    # small tagged-old/new numerical reference
+└── smoke/         # inexpensive CI checks
 ```
 
-## 4. Citation
+Validate a simulation config with:
 
-If you use this code, please cite:
+```bash
+python scripts/validate_config.py configs/simulations/no_police_square.yaml
 ```
-@article{hao2026finite,
-  title={A finite element framework for simulating residential burglary in realistic urban geometries},
-  author={Hao, Baoli and Mily, Kamrun and Quaini, Annalisa and Zhong, Ming},
-  journal={Mathematical Models and Methods in Applied Sciences},
-  volume={36},
-  number={05},
-  pages={1019--1050},
-  year={2026},
-  publisher={World Scientific}
-}
+
+Run the homogeneous stability study with:
+
+```bash
+python scripts/run_stability.py configs/studies/stability_figure3.yaml
 ```
+
+Run the continuum model, Python ABM, and policy comparison with:
+
+```bash
+python scripts/run_pde.py configs/simulations/no_police_square.yaml
+python scripts/run_abm.py configs/abm/delayed_square.yaml
+python scripts/compare_policies.py configs/studies/policy_comparison.yaml
+```
+
+The equivalent installed commands are `urbancrime-pde`, `urbancrime-abm`, and
+`urbancrime-compare-policies`.  Each PDE run writes the resolved configuration,
+Git revision, mesh metadata, XDMF/HDF5 fields, compact time series, final state,
+and SHA-256 checksums beneath `runs/`.
+
+## Verification
+
+The complete local suite includes pure unit tests, a tagged-old/new regression,
+real DOLFINx smoke tests, time and heterogeneous-flux spatial convergence,
+delayed-police mass conservation, and the stochastic ABM-to-PDE reaction-rate
+limit:
+
+```bash
+pytest tests -q
+```
+
+The three notebooks in `notebooks/` are intentionally thin executable front
+ends.  They contain no copied weak forms, solver implementations, or scientific
+parameter dictionaries.
+
+All generated data belong under `runs/`, which is not tracked by Git.
+
+## Papers
+
+The model family builds on:
+
+- B. Hao, K. Mily, A. Quaini, and M. Zhong, “A finite element framework for
+  simulating residential burglary in realistic urban geometries,” *Mathematical
+  Models and Methods in Applied Sciences* 36(5), 2026.
+  [DOI](https://doi.org/10.1142/S0218202526500193)
+- B. Hao, K. Mily, A. Quaini, and M. Zhong, “Crime hotspot dynamics in
+  residential burglary models with police response,” 2026.
+  [arXiv:2605.17709](https://arxiv.org/abs/2605.17709)
+
+Figure-to-command mappings are maintained in [docs/reproduce.md](docs/reproduce.md).
+
+The software license is a release blocker pending copyright-owner and
+institutional confirmation.  See [docs/licensing.md](docs/licensing.md).  No
+reuse license is granted until a `LICENSE` file is added.

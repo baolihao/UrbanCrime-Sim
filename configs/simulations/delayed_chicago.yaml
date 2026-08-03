@@ -1,0 +1,107 @@
+schema_version: 1
+name: delayed-chicago
+
+model:
+  eta:
+    kind: analytic
+    profile: sinusoidal_x
+    parameters: {offset: 0.15, amplitude: 0.05, wavelength: 4.12866563, phase: 0.0}
+  ast:
+    kind: analytic
+    profile: scaled_gaussian_mixture
+    parameters:
+      background: 0.03333333333333333
+      x_scale: 1.2110450319998425
+      y_scale: 1.0
+      components:
+        - {amplitude: 0.05, center: [1.8, 3.2], width: 0.8}
+        - {amplitude: 0.03, center: [3.6, 1.4], width: 1.2}
+  q:
+    kind: analytic
+    profile: cosine_y
+    parameters: {offset: 1.5, amplitude: 0.3, wavelength: 5.0, phase: 0.0}
+
+policing:
+  strategy: delayed
+  tau:
+    kind: analytic
+    profile: trigonometric_product
+    parameters:
+      offset: 1.0
+      amplitude: 0.2
+      x_wavelength: 4.12866563
+      y_wavelength: 5.0
+      x_frequency: 2.0
+      y_frequency: 1.0
+      x_phase: 0.0
+      y_phase: 0.0
+      x_function: sin
+      y_function: cos
+  initial_mean_density: 0.35
+  h_discretization: consistent
+
+domain:
+  kind: polygon
+  boundary_file: data/boundaries/processed/chicago.npy
+
+mesh:
+  cell_type: triangle
+  polynomial_degree: 1
+  characteristic_length: 0.025
+  boundary_length: 0.0125
+  interior_length: 0.025
+  transition_width: 0.20
+
+time:
+  start: 0.0
+  final: 8.5
+  step: 0.01
+  save_every: 1
+
+initial_conditions:
+  A: {kind: uniform_random, low: 1.0, high: 2.0}
+  rho: {kind: constant, value: 0.6}
+  pi:
+    kind: analytic
+    profile: trigonometric_product
+    parameters:
+      offset: 0.35
+      amplitude: 0.05
+      x_wavelength: 4.12866563
+      y_wavelength: 5.0
+      x_frequency: 1.0
+      y_frequency: 1.0
+      x_phase: 0.0
+      y_phase: 0.0
+      x_function: cos
+      y_function: cos
+  H:
+    kind: analytic
+    profile: trigonometric_product
+    parameters:
+      offset: 0.90
+      amplitude: 0.10
+      x_wavelength: 4.12866563
+      y_wavelength: 5.0
+      x_frequency: 2.0
+      y_frequency: 2.0
+      x_phase: 0.0
+      y_phase: 0.0
+      x_function: cos
+      y_function: cos
+  noise: {seed: 42, sparsity: 1.0}
+
+solver:
+  method: implicit
+  relative_tolerance: 1.0e-10
+  absolute_tolerance: 1.0e-12
+  max_iterations: 50
+  state_tolerance: 1.0e-12
+  convergence_criterion: incremental
+  block_order: []
+  petsc_options: {ksp_type: preonly, pc_type: lu}
+
+output:
+  root: runs
+  fields: [A, rho, pi, H]
+  format: xdmf

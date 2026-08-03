@@ -1,0 +1,38 @@
+schema_version: 1
+name: delayed-abm-square
+
+grid:
+  nx: 40
+  ny: 40
+  spacing: 0.25
+  boundary: no_flow
+
+time:
+  start: 0.0
+  final: 20.0
+  step: 0.01
+  save_every: 20
+
+model:
+  eta: 0.2
+  omega: 0.06666666666666667
+  theta: 0.56
+  ast: {kind: constant, value: 0.02}
+  gamma: {kind: constant, value: 0.02}
+  generation_distribution: bernoulli
+
+initial:
+  dynamic_attractiveness: 1.0
+  mean_criminals_per_site: 0.6
+  seed: 42
+
+policing:
+  strategy: delayed
+  tau: 5.0
+  initial_mean_density: 0.5
+  diffusivity: 1.0
+  diffusion_substeps: 1
+  information_floor: 1.0e-8
+
+output:
+  root: runs

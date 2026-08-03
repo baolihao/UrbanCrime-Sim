@@ -1,0 +1,27 @@
+schema_version: 1
+name: policy-comparison
+base_simulation: ../simulations/delayed_square.yaml
+warmup:
+  strategy: none
+  activation_time: 200.0
+strategies:
+  - strategy: prescribed
+    profile: snapshot_tanh
+    activation_time: 200.0
+    budget: {mean_density: 0.5}
+    parameters: {kappa: 5.0, cutoff: 1.5}
+    positivity_floor: 1.0e-12
+  - strategy: optimal
+    activation_time: 200.0
+    budget: {mean_density: 0.5}
+    update_each_iteration: true
+    positivity_floor: 1.0e-15
+    root_tolerance: 1.0e-12
+    root_max_iterations: 200
+  - strategy: delayed
+    tau: {kind: constant, value: 5.0}
+    initial_mean_density: 0.5
+    h_discretization: consistent
+metrics: [crime_average, crime_maximum, police_mass]
+snapshot_times: [200.0, 400.0, 600.0, 800.0, 1000.0]
+output: {root: runs, name: policy-comparison}

@@ -1,0 +1,24 @@
+schema_version: 1
+name: smoke-stability
+base_parameters:
+  eta: 0.15
+  ast_bar: 0.02
+  q_bar: 1.5
+  pi_bar: 0.5
+  domain_length: 10.0
+spectral:
+  max_mode: 4
+root_search:
+  tau_min: 0.01
+  tau_max: 1000.0
+  bracket_samples: 100
+  root_tolerance: 1.0e-8
+transversality_relative_step: 1.0e-5
+sweeps:
+  - parameter: eta
+    values: {scale: linear, start: 0.1, stop: 0.5, count: 5}
+    fixed: {q_bar: 1.5, pi_bar: 0.5}
+output:
+  root: runs
+  name: smoke-stability
+  formats: [png, npz, json]

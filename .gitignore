@@ -1,0 +1,21 @@
+.DS_Store
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.ipynb_checkpoints/
+.venv/
+
+# Generated simulations and visualization artifacts
+runs/
+outputs/
+*.xdmf
+*.h5
+*.bp
+/papers/*.pdf
+
+# Packaging
+build/
+dist/
+*.egg-info/

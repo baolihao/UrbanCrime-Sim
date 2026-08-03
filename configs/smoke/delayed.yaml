@@ -1,0 +1,51 @@
+schema_version: 1
+name: smoke-delayed
+
+model:
+  eta: {kind: constant, value: 0.15}
+  ast: {kind: constant, value: 0.02}
+  q: {kind: constant, value: 1.5}
+
+policing:
+  strategy: delayed
+  tau: {kind: constant, value: 5.0}
+  initial_mean_density: 0.5
+  h_discretization: consistent
+
+domain:
+  kind: rectangle
+  lower_left: [0.0, 0.0]
+  upper_right: [2.0, 2.0]
+
+mesh:
+  cell_type: triangle
+  polynomial_degree: 1
+  nx: 8
+  ny: 8
+
+time:
+  start: 0.0
+  final: 0.04
+  step: 0.02
+  save_every: 1
+
+initial_conditions:
+  A: {kind: constant, value: 1.52}
+  rho: {kind: constant, value: 0.9868421052631579}
+  pi: {kind: constant, value: 0.5}
+  H: {kind: constant, value: 0.9097959895689501}
+
+solver:
+  method: partitioned
+  relative_tolerance: 1.0e-9
+  absolute_tolerance: 1.0e-12
+  max_iterations: 50
+  state_tolerance: 1.0e-12
+  convergence_criterion: incremental
+  block_order: [A, rho, H, pi]
+  petsc_options: {ksp_type: preonly, pc_type: lu}
+
+output:
+  root: runs
+  fields: [A, rho, pi, H]
+  format: xdmf

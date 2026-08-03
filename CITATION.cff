@@ -1,0 +1,46 @@
+cff-version: 1.2.0
+message: "Please cite the software and the paper corresponding to the model configuration you use."
+title: "UrbanCrime-Sim"
+type: software
+version: 0.1.0
+authors:
+  - family-names: Hao
+    given-names: Baoli
+  - family-names: Mily
+    given-names: Kamrun
+  - family-names: Quaini
+    given-names: Annalisa
+  - family-names: Zhong
+    given-names: Ming
+repository-code: "https://github.com/baolihao/UrbanCrime-Sim"
+references:
+  - type: article
+    title: "A finite element framework for simulating residential burglary in realistic urban geometries"
+    authors:
+      - family-names: Hao
+        given-names: Baoli
+      - family-names: Mily
+        given-names: Kamrun
+      - family-names: Quaini
+        given-names: Annalisa
+      - family-names: Zhong
+        given-names: Ming
+    journal: "Mathematical Models and Methods in Applied Sciences"
+    volume: 36
+    issue: 5
+    year: 2026
+    start: 1019
+    end: 1050
+    doi: "10.1142/S0218202526500193"
+  - type: article
+    title: "Crime hotspot dynamics in residential burglary models with police response"
+    authors:
+      - family-names: Hao
+        given-names: Baoli
+      - family-names: Mily
+        given-names: Kamrun
+      - family-names: Quaini
+        given-names: Annalisa
+      - family-names: Zhong
+        given-names: Ming
+    year: 2026

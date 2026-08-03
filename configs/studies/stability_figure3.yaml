@@ -1,0 +1,34 @@
+schema_version: 1
+name: stability-figure-3
+base_parameters:
+  eta: 0.15
+  ast_bar: 0.02
+  q_bar: 1.5
+  pi_bar: 0.5
+  domain_length: 10.0
+spectral:
+  max_mode: 15
+root_search:
+  tau_min: 0.01
+  tau_max: 1000.0
+  bracket_samples: 2000
+  root_tolerance: 1.0e-10
+transversality_relative_step: 1.0e-5
+sweeps:
+  - parameter: eta
+    values: {scale: linear, start: 0.05, stop: 1.0, count: 40}
+    fixed: {q_bar: 1.5, pi_bar: 0.5}
+  - parameter: q_bar
+    values: {scale: linear, start: 0.01, stop: 5.0, count: 50}
+    fixed: {eta: 0.15, pi_bar: 0.5}
+  - parameter: pi_bar
+    values:
+      scale: concatenate
+      parts:
+        - {scale: linear, start: 0.0005, stop: 0.015, count: 50, endpoint: false}
+        - {scale: linear, start: 0.015, stop: 5.0, count: 35}
+    fixed: {eta: 0.15, q_bar: 1.5}
+output:
+  root: runs
+  name: stability-figure-3
+  formats: [png, npz, json]
