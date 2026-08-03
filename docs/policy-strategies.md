@@ -2,7 +2,7 @@
 
 Police density `pi` is the canonical policy quantity.  The attenuation appearing
 in the burglary equations is always computed as `exp(-pi)`; it is never stored or
-exported under the name “police.”
+exported under the name “police”.
 
 ## None
 
