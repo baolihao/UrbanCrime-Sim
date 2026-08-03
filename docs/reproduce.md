@@ -56,7 +56,7 @@ The historical MATLAB implementation remains in `legacy/matlab_abm/` as the
 provenance source. A maintained MATLAB reference path is also available:
 
 ```matlab
-addpath(genpath('legacy/matlab_abm'));
+addpath(genpath('matlab'));
 reproduce_m3as(1); % Figures 5 and 6
 reproduce_m3as(2); % Figure 9
 reproduce_m3as(3); % Figure 12
@@ -86,22 +86,25 @@ reproduce_m3as(3); % Figure 12
 Equivalent maintained MATLAB reference runs are:
 
 ```matlab
-addpath(genpath('legacy/matlab_abm'));
+addpath(genpath('matlab'));
 reproduce_police_extension(1); % Figure 5
 reproduce_police_extension(2); % Figure 6
 reproduce_police_extension(8); % Figure 18
 reproduce_police_extension(9); % Figure 22
 ```
 
-The final extension-paper Case numbers follow Table 1 in the paper.  Several
-historical notebooks in `Desktop/Crime Model/Crime-Police` use older Case names;
-their parameters and saved times were checked, but those filenames are not used
-as the authoritative numbering source.
+The final extension-paper Case numbers follow Table 1 in the paper. Some
+unpublished historical author notebooks use older Case names; their parameters
+and saved times were audited, but those filenames are not used as the
+authoritative numbering source.
 
 ### Extension studies that are implemented but not yet exact paper figures
 
 - `configs/simulations/delayed_square.yaml` is a reusable Case-3-regime run.  It
   is not by itself an exact command for one numbered multipanel figure.
+- `configs/simulations/delayed_chicago.yaml` is a heterogeneous-coefficient,
+  variable-delay Chicago demonstration and an implicit four-field solver
+  benchmark. It is not parameterized as a numbered paper figure.
 - `configs/studies/policy_comparison.yaml` contains the parameters for Figure 26
   (`eta=0.15`, activation at `t_s=200`, police mass `M=50`, fixed-policy
   `mu=5`, `A_c=1.5`).  The current plot contains post-activation averages and

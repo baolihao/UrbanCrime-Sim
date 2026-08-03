@@ -106,7 +106,8 @@ The model family builds on:
 
 Figure-to-command mappings are maintained in [docs/reproduce.md](docs/reproduce.md).
 The executable MATLAB reference ABM and its smoke tests are documented in
-[legacy/matlab_abm/README.md](legacy/matlab_abm/README.md).
+[matlab/README.md](matlab/README.md); pre-refactor sources remain under
+`legacy/matlab_abm/` for provenance only.
 
 ## License and data terms
 

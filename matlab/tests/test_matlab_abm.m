@@ -1,5 +1,5 @@
 function tests = test_matlab_abm
-%TEST_MATLAB_ABM Fast checks for the maintained legacy MATLAB implementation.
+%TEST_MATLAB_ABM Fast checks for the maintained MATLAB implementation.
 tests = functiontests(localfunctions);
 end
 

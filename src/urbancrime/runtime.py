@@ -311,7 +311,19 @@ class PDERunner:
         old_components = ufl.split(self._mixed_previous)
         tests = ufl.TestFunctions(W)
         for index, name in enumerate(names):
-            _, mapping = W.sub(index).collapse()
+            collapsed, mapping = W.sub(index).collapse()
+            collapsed_coordinates = collapsed.tabulate_dof_coordinates()
+            scalar_coordinates = self.V.tabulate_dof_coordinates()
+            if (
+                collapsed_coordinates.shape != scalar_coordinates.shape
+                or not np.allclose(
+                    collapsed_coordinates, scalar_coordinates, rtol=0.0, atol=1.0e-12
+                )
+                or len(mapping) != self.fields[name].x.array.size
+            ):
+                raise RuntimeError(
+                    f"mixed subspace {name} is not dof-compatible with the scalar space"
+                )
             self._mixed_maps[name] = np.asarray(mapping, dtype=np.int32)
         self._sync_fields_to_mixed(previous=False)
         self._sync_fields_to_mixed(previous=True)
