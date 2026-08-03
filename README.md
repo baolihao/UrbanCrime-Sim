@@ -105,6 +105,8 @@ The model family builds on:
   [arXiv:2605.17709](https://arxiv.org/abs/2605.17709)
 
 Figure-to-command mappings are maintained in [docs/reproduce.md](docs/reproduce.md).
+The executable MATLAB reference ABM and its smoke tests are documented in
+[legacy/matlab_abm/README.md](legacy/matlab_abm/README.md).
 
 ## License and data terms
 

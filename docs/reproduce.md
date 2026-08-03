@@ -53,7 +53,14 @@ than hotspot coordinates.
 | Figure 12, Case 3 | `configs/abm/no_police_case3.yaml` | `python scripts/run_abm.py configs/abm/no_police_case3.yaml` | `python scripts/make_abm_figures.py runs/no-police-abm-case-3 --times 0 1.6 10 20 200 --fields A rho --output runs/no-police-abm-case-3/figure12.png` |
 
 The historical MATLAB implementation remains in `legacy/matlab_abm/` as the
-provenance source.  The Python commands above are the maintained executable path.
+provenance source. A maintained MATLAB reference path is also available:
+
+```matlab
+addpath(genpath('legacy/matlab_abm'));
+reproduce_m3as(1); % Figures 5 and 6
+reproduce_m3as(2); % Figure 9
+reproduce_m3as(3); % Figure 12
+```
 
 ### M3AS figures not yet exposed by one command
 
@@ -75,6 +82,16 @@ provenance source.  The Python commands above are the maintained executable path
 | Figure 6, Case 2 delayed-police ABM spatial averages | `configs/abm/delayed_case2.yaml` | `python scripts/run_abm.py configs/abm/delayed_case2.yaml` | `python scripts/make_abm_figures.py runs/delayed-abm-case-2 --metrics mean_A mean_rho mean_H mean_pi --overlay --output runs/delayed-abm-case-2/figure6.png` |
 | Figure 18, Case 8 delayed-police ABM | `configs/abm/delayed_case8.yaml` | `python scripts/run_abm.py configs/abm/delayed_case8.yaml` | `python scripts/make_abm_figures.py runs/delayed-abm-case-8 --times 765 768 771 774 777 780 --fields expected_S --output runs/delayed-abm-case-8/figure18.png` |
 | Figure 22, Case 9 delayed-police ABM | `configs/abm/delayed_case9.yaml` | `python scripts/run_abm.py configs/abm/delayed_case9.yaml` | `python scripts/make_abm_figures.py runs/delayed-abm-case-9 --times 744 747 750 753 756 759 --fields expected_S --output runs/delayed-abm-case-9/figure22.png` |
+
+Equivalent maintained MATLAB reference runs are:
+
+```matlab
+addpath(genpath('legacy/matlab_abm'));
+reproduce_police_extension(1); % Figure 5
+reproduce_police_extension(2); % Figure 6
+reproduce_police_extension(8); % Figure 18
+reproduce_police_extension(9); % Figure 22
+```
 
 The final extension-paper Case numbers follow Table 1 in the paper.  Several
 historical notebooks in `Desktop/Crime Model/Crime-Police` use older Case names;

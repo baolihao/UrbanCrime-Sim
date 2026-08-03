@@ -51,7 +51,7 @@ switch option
     % B0_tilde = Gamma * theta/omega^2
     B0_tilde      = 1.0;
     % A0_tilde = B0_tilde + Ast_tilde + random noise
-    A0_tilde      = B0_tilde + Ast_tilde + normrnd(0, 0.05^2, num_rows, num_cols);
+    A0_tilde      = B0_tilde + Ast_tilde + normrnd(0, 0.05, num_rows, num_cols);
     ind           = A0_tilde < 0;
     A0_tilde(ind) = 0;    
     % rho0 = 0.6 + random noise

@@ -8,3 +8,11 @@
 
 Tests requiring FEniCSx use the `fenics` marker and are skipped when the native
 conda environment is unavailable; long tests use `slow`.
+
+The maintained legacy MATLAB ABM has a separate fast suite:
+
+```matlab
+addpath(genpath('legacy/matlab_abm'));
+results = runtests('legacy/matlab_abm/tests');
+assertSuccess(results);
+```

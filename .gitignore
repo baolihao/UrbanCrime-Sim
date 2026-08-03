@@ -15,6 +15,9 @@ outputs/
 *.bp
 /papers/*.pdf
 
+# Local experimental source supplied for migration; maintained code lives in legacy/.
+/Code_updated_May1226/
+
 # Packaging
 build/
 dist/

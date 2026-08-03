@@ -88,5 +88,5 @@ A_tilde            = A/omega;
 rho_tilde          = rho * rho_scale;
 ts_tilde           = ts * omega;
 % this is done by definition of n and rho
-n_tilde            = rho_tilde * ell_tilde;
+n_tilde            = rho_tilde * ell_tilde^2;
 end
