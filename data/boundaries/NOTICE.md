@@ -23,7 +23,6 @@ geometry, and use of it is at the user's own risk.  See the
   City boundary layer in the City's
   [official GIS service](https://gisapps.cityofchicago.org/arcgis/rest/services/CachedMaps/CartoCache/MapServer),
   which identifies spatial reference 3435 and feet as its units.
-- Acquisition date: unknown; this is a historical download.
 - Local raw input: `raw/chicago/chicago_simplified.shp` and its sidecars.  The
   file is already simplified to one closed exterior ring with 33 coordinates
   and has no `.prj` file.  The method and date of that earlier simplification
